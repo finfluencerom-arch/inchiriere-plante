@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VERDÉ Oradea</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="VERDÉ închiriază și îngrijește plante naturale pentru cafenele, birouri, hoteluri, clinici și magazine din Oradea. Alege plantele, alege abonamentul și programează o evaluare gratuită.">
+<meta name="theme-color" content="#0A130E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F1F16'/%3E%3Cpath d='M16 26c0-8 2.5-13 9-16-1 8-4.5 12-9 16zm0 0c0-5.5-2.5-9.5-8-12 0 6.5 3.5 10 8 12z' fill='%23CDB27A'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/marcellus-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ Straturile pădurii (fundal) ============ -->
+<div class="scene" aria-hidden="true">
+  <div class="sky"></div>
+  <canvas class="layer" id="trees" data-depth="0.15"></canvas>
+  <div class="rays layer" data-depth="0.25"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="fog fog-a"></div>
+  <canvas class="layer" id="foliage-left" data-depth="0.45"></canvas>
+  <canvas class="layer" id="foliage-right" data-depth="0.45"></canvas>
+  <canvas id="motes"></canvas>
+  <canvas id="rain"></canvas>
+  <div class="fog fog-b"></div>
+  <div class="vignette"></div>
+  <div class="scrim"></div>
+  <div class="grain"></div>
+</div>
+<!-- ============ Header ============ -->
+<header class="site-header" id="site-header">
+  <div class="wrap header-row">
+    <a class="wordmark" href="#acasa" aria-label="VERDÉ, pagina principală">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 27c0-8.5 2.6-13.6 9.5-16.8-1 8.4-4.8 12.6-9.5 16.8zm0 0c0-5.8-2.6-10-8.4-12.6 0 6.8 3.7 10.4 8.4 12.6z"/></svg>
+      VERDÉ
+    </a>
+    <nav class="nav" id="nav" aria-label="Navigare principală">
+      <a href="#plante" data-route="plante">Plante</a>
+      <a href="#potrivire" data-route="potrivire">Plant Match</a>
+      <a href="#abonamente" data-route="abonamente">Abonamente</a>
+      <a href="#pasaport" data-route="pasaport">Plant Passport</a>
+      <a href="#despre" data-route="despre">Despre noi</a>
+    </nav>
+    <div class="header-actions">
+      <div class="atmo">
+        <button class="icon-btn" id="atmo-btn" type="button" aria-expanded="false" aria-controls="ambient" aria-label="Atmosferă: ploaie și sunet">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14a4 4 0 0 1-.5-7.97A6 6 0 0 1 18 7a3.5 3.5 0 0 1 0 7"/><path d="M9 18l-.8 2M13 18l-.8 2M17 18l-.8 2"/></svg>
+        </button>
+        <div class="atmo-panel" id="ambient" hidden>
+          <p>Atmosferă</p>
+          <button type="button" class="switch" id="toggle-rain" aria-pressed="false"><span>Ploaie</span><i></i></button>
+          <button type="button" class="switch" id="toggle-sound" aria-pressed="false"><span>Sunetul pădurii</span><i></i></button>
+        </div>
+      </div>
+      <button class="cart-btn" id="cart-btn" type="button" aria-label="Deschide selecția ta">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h14l-1.4 9.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.8L5 9z"/><path d="M8 9c0-4 2-6 4-6s4 2 4 6"/></svg>
+        <span class="cart-label">Selecția</span>
+        <span class="cart-count" id="cart-count">0</span>
+      </button>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Meniu" aria-expanded="false" aria-controls="nav"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================= ACASĂ ================= -->
+<section class="view" id="view-acasa" data-view="acasa">
+  <div class="hero wrap">
+    <div class="hero-copy">
+      <p class="hero-place"><span class="dot"></span>Închiriere și îngrijire de plante în Oradea</p>
+      <h1>Plante vii pentru spațiul tău. <span class="soft">Le îngrijim noi.</span></h1>
+      <p class="lead">Alegi plantele, alegi abonamentul. Noi le aducem, le udăm, le rotim și le înlocuim. Tu te bucuri de un spațiu verde, fără să te ocupi de el.</p>
+      <div class="btn-row">
+        <a class="btn" href="#plante">Alege plantele</a>
+        <a class="btn ghost" href="#potrivire">Potrivire în 1 minut</a>
+      </div>
+    </div>
+
+    <div class="hero-stage">
+      <div class="halo"></div>
+      <article class="feature-card glass" id="feature-card">
+        <div class="feature-art"><canvas id="feature-canvas"></canvas></div>
+        <div class="feature-info">
+          <p class="feature-kicker" id="feature-kicker">Planta sezonului</p>
+          <h2 id="feature-name">Palmier Kentia</h2>
+          <p class="latin" id="feature-latin">Howea forsteriana</p>
+          <p class="feature-note" id="feature-note"></p>
+          <div class="feature-actions">
+            <button class="btn small" type="button" id="feature-add">Adaugă în selecție</button>
+            <button class="link-btn" type="button" id="feature-more">Detalii</button>
+          </div>
+        </div>
+        <div class="feature-dots" id="feature-dots" role="tablist" aria-label="Plante recomandate"></div>
+      </article>
+      <a class="hang-tag" href="#pasaport-VRD-0142" aria-label="Exemplu Plant Passport, VRD-0142">
+        <span class="hang-string"></span>
+        <span class="hang-body">
+          <span class="hang-hole"></span>
+          <small>Plant Passport</small>
+          <b>VRD-0142</b>
+          <em>Scanează eticheta</em>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <div class="wrap section how">
+    <div class="section-head">
+      <h2>Cum funcționează</h2>
+      <p>Trei pași. Primul îl faci tu, de aici înainte ne ocupăm noi.</p>
+    </div>
+    <ol class="steps3">
+      <li>
+        <span class="n">1</span>
+        <h3>Alegi plantele</h3>
+        <p>Din catalog sau cu Plant Match, care îți arată ce rezistă la lumina și temperatura din spațiul tău.</p>
+        <a href="#plante">Vezi plantele</a>
+      </li>
+      <li>
+        <span class="n">2</span>
+        <h3>Le îngrijim noi</h3>
+        <p>Plant Rotation: abonament lunar cu vizite de întreținere, rotații sezoniere și înlocuirea plantelor care nu mai arată bine.</p>
+        <a href="#abonamente">Vezi abonamentele</a>
+      </li>
+      <li>
+        <span class="n">3</span>
+        <h3>Urmărești fiecare plantă</h3>
+        <p>Plant Passport: un cod QR pe fiecare ghiveci, cu starea plantei și istoricul vizitelor.</p>
+        <a href="#pasaport">Caută un cod</a>
+      </li>
+    </ol>
+  </div>
+
+  <div class="wrap section why">
+    <div class="room-demo" data-room></div>
+    <div class="why-copy">
+      <div class="section-head">
+        <h2>Planta potrivită, la locul potrivit</h2>
+        <p>Nu orice plantă rezistă oriunde. Înainte de livrare ne uităm la lumină, temperatură și curent, apoi alegem speciile care vor arăta bine luni la rând.</p>
+      </div>
+      <ul class="why-list">
+        <li><h3>Potrivire înainte de livrare</h3><p>Recomandăm după condițiile reale ale spațiului.</p></li>
+        <li><h3>Serviciu recurent</h3><p>Întreținere, rotație și o amenajare care se schimbă cu sezonul.</p></li>
+        <li><h3>Trasabilitate</h3><p>Fiecare plantă are un istoric digital și o stare cunoscută.</p></li>
+      </ul>
+      <a class="btn ghost" href="#potrivire">Încearcă Plant Match</a>
+    </div>
+  </div>
+
+  <div class="wrap section">
+    <div class="cta">
+      <h2>Programează o evaluare gratuită</h2>
+      <p>Venim, vedem spațiul și îți propunem plantele potrivite și un preț pentru abonament.</p>
+      <a class="btn" href="#cerere">Programează evaluarea</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PLANTE ================= -->
+<section class="view" id="view-plante" data-view="plante" hidden>
+  <div class="wrap page-head">
+    <h1>Plante</h1>
+    <p>Filtrează după condițiile din spațiul tău și adaugă plantele în selecție. Prețul final îl stabilim după evaluare.</p>
+  </div>
+  <div class="filters-bar">
+    <div class="wrap filters" id="filters">
+      <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg><input id="f-search" type="search" placeholder="Caută o plantă" aria-label="Caută o plantă"></label>
+      <div class="filter-group" role="group" aria-label="Lumină">
+        <button type="button" class="fchip" data-f="light" data-v="low">Lumină slabă</button>
+        <button type="button" class="fchip" data-f="light" data-v="medium">Lumină moderată</button>
+        <button type="button" class="fchip" data-f="light" data-v="bright">Lumină multă</button>
+      </div>
+      <div class="filter-group" role="group" aria-label="Mărime">
+        <button type="button" class="fchip" data-f="size" data-v="small">Mică</button>
+        <button type="button" class="fchip" data-f="size" data-v="medium">Medie</button>
+        <button type="button" class="fchip" data-f="size" data-v="large">Mare</button>
+      </div>
+      <div class="filter-group" role="group" aria-label="Condiții speciale">
+        <button type="button" class="fchip" data-f="cool" data-v="1">Rezistă la răcoare</button>
+        <button type="button" class="fchip" data-f="drafts" data-v="1">Rezistă la curent</button>
+        <button type="button" class="fchip" data-f="petSafe" data-v="1">Sigură pentru animale</button>
+      </div>
+      <button type="button" class="link-btn" id="f-reset" hidden>Șterge filtrele</button>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="result-count" id="result-count" aria-live="polite"></p>
+    <div class="plant-grid" id="plant-grid"></div>
+  </div>
+</section>
+
+<!-- ================= PLANT MATCH ================= -->
+<section class="view" id="view-potrivire" data-view="potrivire" hidden>
+  <div class="wrap page-head">
+    <h1>Plant Match</h1>
+    <p>Nu orice plantă rezistă oriunde. Uite de ce contează locul, apoi răspunde la cinci întrebări și vezi ce plante se potrivesc la tine.</p>
+  </div>
+  <div class="wrap match-intro">
+    <div class="room-demo" data-room></div>
+  </div>
+  <div class="wrap">
+    <div class="wizard glass" id="wizard">
+      <div class="wiz-progress"><span id="wiz-bar"></span></div>
+      <div class="wiz-body" id="wiz-body" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABONAMENTE ================= -->
+<section class="view" id="view-abonamente" data-view="abonamente" hidden>
+  <div class="wrap page-head">
+    <h1>Abonamente</h1>
+    <p>Plătești lunar și noi ne ocupăm de tot. Prețul depinde de numărul și mărimea plantelor, așa că îl stabilim după evaluarea gratuită.</p>
+  </div>
+  <div class="wrap">
+    <div class="packages" id="packages"></div>
+    <div class="faq">
+      <h2>Întrebări frecvente</h2>
+      <details><summary>Cât costă abonamentul?</summary><p>Depinde de câte plante vrei, cât de mari sunt și ce pachet alegi. După evaluare primești un preț lunar fix, fără costuri ascunse. Instalarea și selecția inițială pot avea o taxă unică, pe care o vezi în ofertă.</p></details>
+      <details><summary>Ce se întâmplă dacă o plantă se usucă?</summary><p>O înlocuim noi, fără cost suplimentar. Pentru asta există abonamentul.</p></details>
+      <details><summary>Pot schimba plantele pe parcurs?</summary><p>Da. În pachetele Sezonier și Premium rotațiile sunt incluse. În pachetul Esențial poți cere oricând o schimbare de compoziție.</p></details>
+      <details><summary>Cine vine la vizite?</summary><p>Echipa VERDÉ. La început ne ocupăm personal de fiecare plantă, iar pe măsură ce creștem, ne mărim echipa.</p></details>
+      <details><summary>Lucrați și în afara Oradiei?</summary><p>Pentru moment, doar în Oradea. Vrem să facem bine serviciul local înainte să ne extindem.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PLANT PASSPORT ================= -->
+<section class="view" id="view-pasaport" data-view="pasaport" hidden>
+  <div class="wrap page-head">
+    <h1>Plant Passport</h1>
+    <p>Introdu codul de pe eticheta plantei sau scanează codul QR cu telefonul.</p>
+  </div>
+  <div class="wrap">
+    <form class="lookup glass" id="lookup-form">
+      <label for="lookup-code">Codul plantei</label>
+      <div class="lookup-row">
+        <input id="lookup-code" placeholder="ex. VRD-0142" autocomplete="off" spellcheck="false">
+        <button class="btn" type="submit">Deschide profilul</button>
+      </div>
+      <p class="lookup-demo">Coduri demonstrative: <button type="button" class="code-chip" data-code="VRD-0142">VRD-0142</button> <button type="button" class="code-chip" data-code="VRD-0087">VRD-0087</button> <button type="button" class="code-chip" data-code="VRD-0215">VRD-0215</button></p>
+      <p class="lookup-error" id="lookup-error" hidden></p>
+    </form>
+    <div id="passport-view"></div>
+  </div>
+</section>
+
+<!-- ================= DESPRE ================= -->
+<section class="view" id="view-despre" data-view="despre" hidden>
+  <div class="wrap page-head">
+    <h1>Despre noi</h1>
+    <p>VERDÉ este un proiect pornit de studenți din Oradea care vor ca natura să ajungă în spațiile în care lucrăm și ne întâlnim.</p>
+  </div>
+  <div class="wrap about">
+    <div class="about-story">
+      <h2>Făcut de noi, de la zero</h2>
+      <p>Platforma VERDÉ e construită in-house, de noi, studenții din echipă. Catalogul, Plant Match și Plant Passport sunt instrumente pe care le-am făcut singuri, ca să ținem costurile mici și să le putem îmbunătăți oricând.</p>
+      <p>La început ne ocupăm personal de plante: le alegem, le livrăm, le îngrijim și le înlocuim. Pe măsură ce crește numărul de clienți, ne mărim echipa.</p>
+      <p>Pornim simplu, fără investiții mari. Nu construim o afacere care cere capital mare: începem cu un număr restrâns de plante rezistente și câțiva clienți-pilot, apoi creștem pe baza a ceea ce funcționează.</p>
+    </div>
+    <div class="about-values">
+      <div class="value"><h3>Pornim mic</h3><p>Puține specii, alese bine. Fără depozite mari și fără stoc inutil.</p></div>
+      <div class="value"><h3>Facem singuri</h3><p>Tehnologia e a noastră, deci nu plătim licențe și o adaptăm rapid.</p></div>
+      <div class="value"><h3>Creștem treptat</h3><p>Primim clienți noi doar în ritmul în care putem îngriji bine fiecare plantă.</p></div>
+    </div>
+    <div class="section-head" style="margin-top:1rem"><h2>Cum creștem</h2></div>
+    <ol class="roadmap">
+      <li class="now"><span class="when">Etapa 1</span><div><h3>Validare și lansare</h3><p>Discuții cu afaceri locale, primii clienți-pilot și un portofoliu restrâns de plante.</p></div><span class="pill">Acum</span></li>
+      <li><span class="when">Etapa 2</span><div><h3>Digitalizare</h3><p>Plant Match și Plant Passport, construite de noi, simple și utile în practică.</p></div></li>
+      <li><span class="when">Etapa 3</span><div><h3>Optimizare și echipă mai mare</h3><p>Folosim datele din abonamente pentru întreținere mai bună și primim colegi noi în echipă.</p></div></li>
+      <li><span class="when">Etapa 4</span><div><h3>Green Set</h3><p>Amenajări botanice modulare pentru recepții și evenimente.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= CERERE ================= -->
+<section class="view" id="view-cerere" data-view="cerere" hidden>
+  <div class="wrap page-head">
+    <h1>Programează evaluarea</h1>
+    <p>Venim gratuit să vedem spațiul. După vizită primești propunerea de plante și prețul abonamentului.</p>
+  </div>
+  <div class="wrap checkout" id="checkout">
+    <form class="glass request-form" id="request-form" novalidate>
+      <fieldset class="rstep">
+        <legend><span class="rnum">1</span>Despre spațiu</legend>
+        <div class="grid2">
+          <div class="field"><label for="r-business">Numele afacerii</label><input id="r-business" required autocomplete="organization"></div>
+          <div class="field"><label for="r-type">Tip de spațiu</label>
+            <select id="r-type"><option>Cafenea / restaurant</option><option>Hotel</option><option>Birou / coworking</option><option>Clinică / salon</option><option>Magazin / showroom</option><option>Altceva</option></select></div>
+          <div class="field"><label for="r-address">Adresa din Oradea</label><input id="r-address" required autocomplete="street-address"></div>
+          <div class="field"><label for="r-area">Suprafață aproximativă</label>
+            <select id="r-area"><option>sub 50 m²</option><option>50–150 m²</option><option>150–300 m²</option><option>peste 300 m²</option></select></div>
+        </div>
+      </fieldset>
+      <fieldset class="rstep">
+        <legend><span class="rnum">2</span>Când putem veni</legend>
+        <div class="dates" id="r-dates" role="radiogroup" aria-label="Alege ziua"></div>
+        <div class="slots" id="r-slots" role="radiogroup" aria-label="Alege intervalul">
+          <button type="button" class="slot" data-slot="09:00–11:00">09:00–11:00</button>
+          <button type="button" class="slot" data-slot="11:00–13:00">11:00–13:00</button>
+          <button type="button" class="slot" data-slot="14:00–16:00">14:00–16:00</button>
+          <button type="button" class="slot" data-slot="16:00–18:00">16:00–18:00</button>
+        </div>
+      </fieldset>
+      <fieldset class="rstep">
+        <legend><span class="rnum">3</span>Date de contact</legend>
+        <div class="grid2">
+          <div class="field"><label for="r-name">Nume și prenume</label><input id="r-name" required autocomplete="name"></div>
+          <div class="field"><label for="r-phone">Telefon</label><input id="r-phone" required type="tel" autocomplete="tel"></div>
+          <div class="field full"><label for="r-email">Email</label><input id="r-email" type="email" autocomplete="email"></div>
+          <div class="field full"><label for="r-notes">Ceva ce ar trebui să știm?</label><textarea id="r-notes" placeholder="Ex. avem o vitrină mare spre sud, vrem plante și pe terasă."></textarea></div>
+        </div>
+        <label class="check"><input type="checkbox" id="r-consent"> <span>Sunt de acord să fiu contactat de VERDÉ pentru această cerere.</span></label>
+      </fieldset>
+      <p class="form-error" id="r-error" hidden></p>
+      <button class="btn wide" type="submit">Trimite cererea</button>
+    </form>
+
+    <aside class="summary glass" id="summary" aria-label="Rezumatul selecției"></aside>
+  </div>
+  <div class="wrap" id="confirmation" hidden></div>
+  <div class="wrap my-requests" id="my-requests"></div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-row">
+    <div class="footer-brand">
+      <span class="wordmark small">VERDÉ</span>
+      <p>Plante. Spații. Experiențe.<br>Proiect construit de studenți din Oradea.</p>
+    </div>
+    <nav class="footer-links" aria-label="Linkuri">
+      <a href="#plante">Plante</a><a href="#potrivire">Plant Match</a><a href="#abonamente">Abonamente</a><a href="#pasaport">Plant Passport</a><a href="#despre">Despre noi</a><a href="#cerere">Programează evaluarea</a>
+    </nav>
+    <div class="footer-contact">
+      <span>Scrie-ne</span>
+      <span class="mail" id="footer-email"></span>
+      <span id="footer-phone"></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ Selecția (sertar) ============ -->
+<div class="drawer-back" id="drawer-back" hidden></div>
+<aside class="drawer" id="drawer" aria-label="Selecția ta" aria-hidden="true">
+  <div class="drawer-head">
+    <h2>Selecția ta</h2>
+    <button class="icon-btn" type="button" id="drawer-close" aria-label="Închide selecția"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+  <div class="drawer-foot" id="drawer-foot"></div>
+</aside>
+
+<!-- ============ Detalii plantă ============ -->
+<div class="modal-back" id="modal-back" hidden>
+  <div class="modal glass" role="dialog" aria-modal="true" aria-labelledby="modal-title" id="modal">
+    <button class="icon-btn modal-close" type="button" id="modal-close" aria-label="Închide"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="modal-art"><canvas id="modal-canvas"></canvas></div>
+    <div class="modal-info" id="modal-info"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/art.js"></script>
+<script src="js/room.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
