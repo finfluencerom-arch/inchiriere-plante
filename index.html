@@ -5,12 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>VERDÉ Oradea</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="VERDÉ închiriază și îngrijește plante naturale pentru cafenele, birouri, hoteluri, clinici și magazine din Oradea. Alege plantele, alege abonamentul și programează o evaluare gratuită.">
-<meta name="theme-color" content="#0A130E">
+<meta name="description" content="VERDÉ închiriază și îngrijește plante naturale pentru afacerile și evenimentele din Oradea și Bihor: abonamente de la 120 lei pe lună, plante pentru nunți și conferințe, plante de sezon. Evaluare gratuită.">
+<meta name="theme-color" content="#FBF9F3">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F1F16'/%3E%3Cpath d='M16 26c0-8 2.5-13 9-16-1 8-4.5 12-9 16zm0 0c0-5.5-2.5-9.5-8-12 0 6.5 3.5 10 8 12z' fill='%23CDB27A'/%3E%3C/svg%3E">
-<link rel="preload" href="fonts/marcellus-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/jungla.css">
 </head>
 <body>
 
@@ -40,17 +43,18 @@
       <a href="#plante" data-route="plante">Plante</a>
       <a href="#potrivire" data-route="potrivire">Plant Match</a>
       <a href="#abonamente" data-route="abonamente">Abonamente</a>
+      <a href="#evenimente" data-route="evenimente">Evenimente</a>
       <a href="#pasaport" data-route="pasaport">Plant Passport</a>
       <a href="#despre" data-route="despre">Despre noi</a>
     </nav>
     <div class="header-actions">
       <div class="atmo">
-        <button class="icon-btn" id="atmo-btn" type="button" aria-expanded="false" aria-controls="ambient" aria-label="Atmosferă: ploaie și sunet">
+        <button class="icon-btn" id="atmo-btn" type="button" aria-expanded="false" aria-controls="ambient" aria-label="Sunetul pădurii">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14a4 4 0 0 1-.5-7.97A6 6 0 0 1 18 7a3.5 3.5 0 0 1 0 7"/><path d="M9 18l-.8 2M13 18l-.8 2M17 18l-.8 2"/></svg>
         </button>
         <div class="atmo-panel" id="ambient" hidden>
           <p>Atmosferă</p>
-          <button type="button" class="switch" id="toggle-rain" aria-pressed="false"><span>Ploaie</span><i></i></button>
+          <button type="button" class="switch" id="toggle-rain" aria-pressed="false" hidden><span>Ploaie</span><i></i></button>
           <button type="button" class="switch" id="toggle-sound" aria-pressed="false"><span>Sunetul pădurii</span><i></i></button>
         </div>
       </div>
@@ -68,15 +72,38 @@
 
 <!-- ================= ACASĂ ================= -->
 <section class="view" id="view-acasa" data-view="acasa">
+  <div class="jungle" id="jungle" aria-label="Intrarea în jungla VERDÉ">
+    <div class="jungle-stage">
+      <div class="jungle-light" id="jungle-light"></div>
+      <div class="jungle-end" id="jungle-end" aria-hidden="true">
+        <p class="eyebrow">Bine ai ieșit din junglă</p>
+        <h2>Spațiul tău,<br><i>mai viu.</i></h2>
+        <p>Plante vii pentru birouri, cafenele, hoteluri, cabinete și evenimente din Bihor. Le aducem, le îngrijim și le înlocuim. Tu doar te bucuri de ele.</p>
+        <div class="btn-row"><a class="btn" href="#cerere">Programează evaluarea gratuită</a><a class="btn ghost" href="#plante">Alege plantele</a></div>
+        <p class="jungle-price">Abonamente de la <b>120 lei</b> pe lună</p>
+      </div>
+      <div class="jungle-layers" id="jungle-layers"></div>
+      <canvas class="jungle-dust" id="jungle-dust" aria-hidden="true"></canvas>
+      <div class="jungle-mid" id="jungle-mid" aria-hidden="true"><p>Un birou cu plante lucrează <i>cu 15% mai bine.</i></p></div>
+      <div class="jungle-hero" id="jungle-hero">
+        <p class="eyebrow">Plante vii pentru afaceri și evenimente · Oradea</p>
+        <h1>VERDÉ</h1>
+        <p class="motto">Le aducem. Le îngrijim. <i>Le înlocuim.</i></p>
+      </div>
+      <div class="jungle-hint" id="jungle-hint" aria-hidden="true">Intră în junglă<span></span></div>
+    </div>
+  </div>
+
   <div class="hero wrap">
     <div class="hero-copy">
-      <p class="hero-place"><span class="dot"></span>Închiriere și îngrijire de plante în Oradea</p>
-      <h1>Plante vii pentru spațiul tău. <span class="soft">Le îngrijim noi.</span></h1>
+      <p class="hero-place"><span class="dot"></span>Planta sezonului</p>
+      <h2 class="hero-title">Plante vii pentru spațiul tău. <span class="soft">Le îngrijim noi.</span></h2>
       <p class="lead">Alegi plantele, alegi abonamentul. Noi le aducem, le udăm, le rotim și le înlocuim. Tu te bucuri de un spațiu verde, fără să te ocupi de el.</p>
       <div class="btn-row">
         <a class="btn" href="#plante">Alege plantele</a>
         <a class="btn ghost" href="#potrivire">Potrivire în 1 minut</a>
       </div>
+      <p class="hero-price">Abonamente de la <b>120 lei</b> pe lună · evaluare gratuită</p>
     </div>
 
     <div class="hero-stage">
@@ -107,39 +134,73 @@
     </div>
   </div>
 
-  <div class="wrap section how">
+  <div class="trust" aria-label="Pe scurt">
+    <ul class="wrap trust-row">
+      <li>Evaluare gratuită</li><li>Înlocuire în 3 zile</li><li>Preț fix pe 12 luni</li><li>Echipă din Oradea</li>
+    </ul>
+  </div>
+
+  <div class="wrap section how band paper">
     <div class="section-head">
-      <h2>Cum funcționează</h2>
-      <p>Trei pași. Primul îl faci tu, de aici înainte ne ocupăm noi.</p>
+      <p class="eyebrow">01 · Cum funcționează</p>
+      <h2>Tu alegi. Noi ne ocupăm de rest.</h2>
     </div>
     <ol class="steps3">
       <li>
         <span class="n">1</span>
         <h3>Alegi plantele</h3>
-        <p>Din catalog sau cu Plant Match, care îți arată ce rezistă la lumina și temperatura din spațiul tău.</p>
+        <p>Din catalog sau cu Plant Match, după lumina din spațiul tău.</p>
         <a href="#plante">Vezi plantele</a>
       </li>
       <li>
         <span class="n">2</span>
         <h3>Le îngrijim noi</h3>
-        <p>Plant Rotation: abonament lunar cu vizite de întreținere, rotații sezoniere și înlocuirea plantelor care nu mai arată bine.</p>
+        <p>Vizite regulate, rotații de sezon și înlocuire gratuită.</p>
         <a href="#abonamente">Vezi abonamentele</a>
       </li>
       <li>
         <span class="n">3</span>
         <h3>Urmărești fiecare plantă</h3>
-        <p>Plant Passport: un cod QR pe fiecare ghiveci, cu starea plantei și istoricul vizitelor.</p>
+        <p>Un cod QR pe fiecare ghiveci, cu istoricul plantei.</p>
         <a href="#pasaport">Caută un cod</a>
       </li>
     </ol>
+  </div>
+
+  <div class="tf" id="tf" aria-label="Același birou, înainte și după VERDÉ">
+    <div class="tf-stage">
+      <div class="wrap tf-grid">
+        <div class="tf-copy">
+          <p class="eyebrow">02 · Același birou</p>
+          <h2>Ce schimbă <i>câteva plante.</i></h2>
+          <div class="tf-counter"><b id="tf-count">0</b><span>plante<br>aduse de VERDÉ</span></div>
+          <div class="tf-steps">
+            <p class="tf-step on"><span>Înainte</span>Gri, rece, nimeni nu are chef să stea aici.</p>
+            <p class="tf-step"><span>Montajul</span>Alegem plante care rezistă la lumina din cameră și le așezăm în aceeași zi.</p>
+            <p class="tf-step"><span>După</span>Același birou, aceleași mese. Doar că acum e viu. Iar de îngrijire ne ocupăm noi.</p>
+          </div>
+          <div class="tf-track"><i id="tf-bar"></i></div>
+          <a class="btn" href="#cerere">Vreau și eu asta</a>
+        </div>
+        <div class="tf-frame">
+          <img id="tf-photo" src="img/birou.jpg" alt="Un birou cu mese negre și pereți gri, fără plante" width="736" height="981">
+          <div class="tf-after" id="tf-after"><img src="img/birou-verde.jpg" alt="Același birou, cu plante VERDÉ" width="768" height="1024"></div>
+          <span class="tf-line" id="tf-line" aria-hidden="true"></span>
+          <span class="tf-label before" aria-hidden="true">Înainte</span>
+          <span class="tf-label after" id="tf-lab-after" aria-hidden="true">Cu VERDÉ</span>
+          <span class="tf-tag">Vizualizare</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="wrap section why">
     <div class="room-demo" data-room></div>
     <div class="why-copy">
       <div class="section-head">
+        <p class="eyebrow">03 · Plant Match</p>
         <h2>Planta potrivită, la locul potrivit</h2>
-        <p>Nu orice plantă rezistă oriunde. Înainte de livrare ne uităm la lumină, temperatură și curent, apoi alegem speciile care vor arăta bine luni la rând.</p>
+        <p>Ne uităm la lumină, temperatură și curent, apoi alegem speciile care rezistă.</p>
       </div>
       <ul class="why-list">
         <li><h3>Potrivire înainte de livrare</h3><p>Recomandăm după condițiile reale ale spațiului.</p></li>
@@ -147,6 +208,45 @@
         <li><h3>Trasabilitate</h3><p>Fiecare plantă are un istoric digital și o stare cunoscută.</p></li>
       </ul>
       <a class="btn ghost" href="#potrivire">Încearcă Plant Match</a>
+    </div>
+  </div>
+
+  <div class="wrap section services3 band sage">
+    <div class="section-head">
+      <p class="eyebrow">04 · Servicii</p>
+      <h2>Trei servicii, un singur stoc de plante</h2>
+    </div>
+    <div class="svc-grid">
+      <a class="svc glass" href="#abonamente">
+        <span class="svc-k">Pentru spații</span>
+        <h3>Abonamente</h3>
+        <p>Plante la tine tot anul, îngrijite de noi.</p>
+        <strong>de la 120 lei <small>pe lună</small></strong>
+      </a>
+      <a class="svc glass" href="#evenimente">
+        <span class="svc-k">Pentru o zi</span>
+        <h3>Evenimente</h3>
+        <p>Verde mult pentru nunți, botezuri și conferințe.</p>
+        <strong>de la 300 lei <small>pe eveniment</small></strong>
+      </a>
+      <a class="svc glass" href="#abonamente-sezon">
+        <span class="svc-k">Pentru fiecare anotimp</span>
+        <h3>Plante de sezon</h3>
+        <p>Decorul se schimbă odată cu anotimpul.</p>
+        <strong>4 schimbări <small>pe an</small></strong>
+      </a>
+    </div>
+  </div>
+
+  <div class="wrap section proof band sage">
+    <div class="section-head">
+      <p class="eyebrow">05 · De ce contează</p>
+      <h2>Plantele nu sunt doar decor</h2>
+    </div>
+    <div class="stat-grid">
+      <figure class="stat"><b>+15%</b><figcaption>productivitate după ce un birou gol a primit plante</figcaption><cite>Nieuwenhuis și colab., 2014</cite></figure>
+      <figure class="stat"><b>+15%</b><figcaption>stare de bine la angajații care lucrează între plante</figcaption><cite>Human Spaces Report, 2015</cite></figure>
+      <figure class="stat"><b>Nr. 2</b><figcaption>cel mai dorit lucru într-un birou, după lumina naturală</figcaption><cite>Human Spaces Report, 2015</cite></figure>
     </div>
   </div>
 
@@ -163,7 +263,7 @@
 <section class="view" id="view-plante" data-view="plante" hidden>
   <div class="wrap page-head">
     <h1>Plante</h1>
-    <p>Filtrează după condițiile din spațiul tău și adaugă plantele în selecție. Prețul final îl stabilim după evaluare.</p>
+    <p>Filtrează după condițiile din spațiul tău și adaugă plantele în selecție. Abonamentele pornesc de la 150 de lei pe lună cu plantele noastre; oferta finală o primești după evaluare.</p>
   </div>
   <div class="filters-bar">
     <div class="wrap filters" id="filters">
@@ -213,17 +313,30 @@
 <section class="view" id="view-abonamente" data-view="abonamente" hidden>
   <div class="wrap page-head">
     <h1>Abonamente</h1>
-    <p>Plătești lunar și noi ne ocupăm de tot. Prețul depinde de numărul și mărimea plantelor, așa că îl stabilim după evaluarea gratuită.</p>
+    <p>Plătești lunar și noi ne ocupăm de tot. Prețurile de mai jos sunt orientative; după evaluarea gratuită primești o ofertă scrisă, cu preț fix pe 12 luni.</p>
   </div>
-  <div class="wrap">
-    <div class="packages" id="packages"></div>
+  <div class="wrap band paper band-end">
+    <div class="packages four" id="packages"></div>
+    <div class="seasons" id="abonamente-sezon">
+      <div class="section-head">
+        <h2>Plante de sezon</h2>
+        <p>Incluse în pachetul Premium, la cerere pentru celelalte. Spațiul se schimbă odată cu anotimpul.</p>
+      </div>
+      <ul class="season-grid">
+        <li><span>martie – mai</span><h3>Primăvară</h3><p>Zambile, lalele și narcise în ghiveci, primule, primele hortensii.</p></li>
+        <li><span>iunie – august</span><h3>Vară</h3><p>Lavandă, hortensii, rozmarin; mușcate și bougainvillea pentru terase.</p></li>
+        <li><span>septembrie – noiembrie</span><h3>Toamnă</h3><p>Crizanteme, iarbă neagră, ciclame, Heuchera.</p></li>
+        <li><span>decembrie – februarie</span><h3>Iarnă</h3><p>Crăciunițe, brăduți în ghiveci, Helleborus, amaryllis.</p></li>
+      </ul>
+    </div>
     <div class="faq">
       <h2>Întrebări frecvente</h2>
-      <details><summary>Cât costă abonamentul?</summary><p>Depinde de câte plante vrei, cât de mari sunt și ce pachet alegi. După evaluare primești un preț lunar fix, fără costuri ascunse. Instalarea și selecția inițială pot avea o taxă unică, pe care o vezi în ofertă.</p></details>
-      <details><summary>Ce se întâmplă dacă o plantă se usucă?</summary><p>O înlocuim noi, fără cost suplimentar. Pentru asta există abonamentul.</p></details>
-      <details><summary>Pot schimba plantele pe parcurs?</summary><p>Da. În pachetele Sezonier și Premium rotațiile sunt incluse. În pachetul Esențial poți cere oricând o schimbare de compoziție.</p></details>
+      <details><summary>Cât costă abonamentul?</summary><p>De la 120 de lei pe lună pentru Îngrijire și de la 150 de lei pentru pachetul Mic. Cel mai ales, Standard, costă 300–350 de lei pe lună. Prețul exact depinde de numărul și mărimea plantelor; după evaluare primești un preț lunar fix, fără costuri ascunse. Instalarea și selecția inițială pot avea o taxă unică, pe care o vezi în ofertă.</p></details>
+      <details><summary>Ce se întâmplă dacă o plantă se usucă?</summary><p>O înlocuim noi, fără cost suplimentar, în cel mult 3 zile lucrătoare. Pentru asta există abonamentul. La pachetul Îngrijire, plantele sunt ale tale, deci înlocuirile se plătesc separat.</p></details>
+      <details><summary>Pot schimba plantele pe parcurs?</summary><p>Da. În pachetul Premium rotațiile de sezon sunt incluse. În celelalte pachete poți cere oricând o schimbare de compoziție sau plante de sezon.</p></details>
+      <details><summary>Cât durează contractul?</summary><p>12 luni, cu prima lună plătită în avans. Plantele rămân ale noastre, așa că nu investești nimic în ele.</p></details>
       <details><summary>Cine vine la vizite?</summary><p>Echipa VERDÉ. La început ne ocupăm personal de fiecare plantă, iar pe măsură ce creștem, ne mărim echipa.</p></details>
-      <details><summary>Lucrați și în afara Oradiei?</summary><p>Pentru moment, doar în Oradea. Vrem să facem bine serviciul local înainte să ne extindem.</p></details>
+      <details><summary>Lucrați și în afara Oradiei?</summary><p>În Oradea și în Băile Felix. În celelalte localități din Bihor venim când avem cel puțin trei clienți în aceeași zonă, iar la evenimente mergem în tot județul.</p></details>
     </div>
   </div>
 </section>
@@ -248,13 +361,61 @@
   </div>
 </section>
 
+<!-- ================= EVENIMENTE ================= -->
+<section class="view" id="view-evenimente" data-view="evenimente" hidden>
+  <div class="wrap page-head">
+    <h1>Plante pentru evenimente</h1>
+    <p>Verde mult și natural pentru nunți, botezuri, conferințe și lansări. Le aducem, le aranjăm și le luăm înapoi după eveniment. Tu te bucuri de zi.</p>
+  </div>
+  <div class="wrap band paper band-end">
+    <ul class="ev-types">
+      <li><h3>Nunți, botezuri, aniversări</h3><p>Intrare, ceremonie, mese și zona foto.</p></li>
+      <li><h3>Conferințe și evenimente de firmă</h3><p>Scenă, recepție și zone de networking.</p></li>
+      <li><h3>Lansări, târguri, standuri</h3><p>Plante care pun în valoare brandul.</p></li>
+      <li><h3>Ședințe foto și filmări</h3><p>Fundaluri verzi și Green Set: panou, arcadă, zonă foto.</p></li>
+    </ul>
+    <ol class="steps3 steps4">
+      <li><span class="n">1</span><h3>Ne scrii</h3><p>Data, locul și numărul de invitați.</p></li>
+      <li><span class="n">2</span><h3>Primești propunerea</h3><p>După pozele locației, cu prețul fix.</p></li>
+      <li><span class="n">3</span><h3>Rezervi</h3><p>Cu 30% avans; restul cu 7 zile înainte.</p></li>
+      <li><span class="n">4</span><h3>Noi facem restul</h3><p>Livrare, montaj și demontaj. Plantele pleacă a doua zi.</p></li>
+    </ol>
+    <div class="packages four" id="event-packages"></div>
+    <div class="ev-request" id="ev-request">
+      <div class="section-head">
+        <h2>Cere o propunere</h2>
+        <p>Îți răspundem în cel mult două zile lucrătoare, cu o propunere de decor și prețul.</p>
+      </div>
+      <form class="glass request-form" id="event-form" novalidate>
+        <div class="grid2">
+          <div class="field"><label for="e-type">Tipul evenimentului</label>
+            <select id="e-type"><option>Nuntă</option><option>Botez / aniversare</option><option>Conferință / eveniment de firmă</option><option>Lansare / târg</option><option>Ședință foto / filmare</option><option>Altceva</option></select></div>
+          <div class="field"><label for="e-date">Data</label><input id="e-date" type="date" required></div>
+          <div class="field"><label for="e-place">Locul (sală, localitate)</label><input id="e-place" required></div>
+          <div class="field"><label for="e-guests">Număr aproximativ de invitați</label>
+            <select id="e-guests"><option>sub 50</option><option>50–150</option><option>150–300</option><option>peste 300</option></select></div>
+          <div class="field full"><label for="e-pack">Pachetul care te interesează</label><select id="e-pack"></select></div>
+          <div class="field"><label for="e-name">Nume și prenume</label><input id="e-name" required autocomplete="name"></div>
+          <div class="field"><label for="e-phone">Telefon</label><input id="e-phone" required type="tel" autocomplete="tel"></div>
+          <div class="field full"><label for="e-email">Email</label><input id="e-email" type="email" autocomplete="email"></div>
+          <div class="field full"><label for="e-notes">Ce ți-ai dori?</label><textarea id="e-notes" placeholder="Ex. vrem mult verde la intrare și o arcadă pentru poze."></textarea></div>
+        </div>
+        <label class="check"><input type="checkbox" id="e-consent"> <span>Sunt de acord să fiu contactat de VERDÉ pentru această cerere.</span></label>
+        <p class="form-error" id="e-error" hidden></p>
+        <button class="btn wide" type="submit">Trimite cererea</button>
+      </form>
+      <div id="ev-confirmation" hidden></div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= DESPRE ================= -->
 <section class="view" id="view-despre" data-view="despre" hidden>
   <div class="wrap page-head">
     <h1>Despre noi</h1>
     <p>VERDÉ este un proiect pornit de studenți din Oradea care vor ca natura să ajungă în spațiile în care lucrăm și ne întâlnim.</p>
   </div>
-  <div class="wrap about">
+  <div class="wrap about band paper band-end">
     <div class="about-story">
       <h2>Făcut de noi, de la zero</h2>
       <p>Platforma VERDÉ e construită in-house, de noi, studenții din echipă. Catalogul, Plant Match și Plant Passport sunt instrumente pe care le-am făcut singuri, ca să ținem costurile mici și să le putem îmbunătăți oricând.</p>
@@ -266,12 +427,15 @@
       <div class="value"><h3>Facem singuri</h3><p>Tehnologia e a noastră, deci nu plătim licențe și o adaptăm rapid.</p></div>
       <div class="value"><h3>Creștem treptat</h3><p>Primim clienți noi doar în ritmul în care putem îngriji bine fiecare plantă.</p></div>
     </div>
+    <div class="section-head" style="margin-top:1rem"><h2>Echipa</h2><p>Studenți ai Universității din Oradea. Fiecare răspunde de o parte din VERDÉ.</p></div>
+    <ul class="team-grid" id="team-grid"></ul>
     <div class="section-head" style="margin-top:1rem"><h2>Cum creștem</h2></div>
     <ol class="roadmap">
       <li class="now"><span class="when">Etapa 1</span><div><h3>Validare și lansare</h3><p>Discuții cu afaceri locale, primii clienți-pilot și un portofoliu restrâns de plante.</p></div><span class="pill">Acum</span></li>
       <li><span class="when">Etapa 2</span><div><h3>Digitalizare</h3><p>Plant Match și Plant Passport, construite de noi, simple și utile în practică.</p></div></li>
       <li><span class="when">Etapa 3</span><div><h3>Optimizare și echipă mai mare</h3><p>Folosim datele din abonamente pentru întreținere mai bună și primim colegi noi în echipă.</p></div></li>
       <li><span class="when">Etapa 4</span><div><h3>Green Set</h3><p>Amenajări botanice modulare pentru recepții și evenimente.</p></div></li>
+      <li><span class="when">Etapa 5</span><div><h3>Spații verzi cu brand</h3><p>Decorăm și îngrijim spațiile verzi publice pe care firmele le preiau de la Primărie.</p></div></li>
     </ol>
   </div>
 </section>
@@ -289,8 +453,8 @@
         <div class="grid2">
           <div class="field"><label for="r-business">Numele afacerii</label><input id="r-business" required autocomplete="organization"></div>
           <div class="field"><label for="r-type">Tip de spațiu</label>
-            <select id="r-type"><option>Cafenea / restaurant</option><option>Hotel</option><option>Birou / coworking</option><option>Clinică / salon</option><option>Magazin / showroom</option><option>Altceva</option></select></div>
-          <div class="field"><label for="r-address">Adresa din Oradea</label><input id="r-address" required autocomplete="street-address"></div>
+            <select id="r-type"><option>Cafenea / restaurant</option><option>Hotel / pensiune</option><option>Birou / coworking</option><option>Cabinet stomatologic / clinică</option><option>Contabilitate / avocatură / notariat</option><option>Salon</option><option>Magazin / showroom</option><option>Sală de evenimente</option><option>Altceva</option></select></div>
+          <div class="field"><label for="r-address">Adresa (Oradea, Băile Felix sau Bihor)</label><input id="r-address" required autocomplete="street-address"></div>
           <div class="field"><label for="r-area">Suprafață aproximativă</label>
             <select id="r-area"><option>sub 50 m²</option><option>50–150 m²</option><option>150–300 m²</option><option>peste 300 m²</option></select></div>
         </div>
@@ -331,10 +495,10 @@
   <div class="wrap footer-row">
     <div class="footer-brand">
       <span class="wordmark small">VERDÉ</span>
-      <p>Plante. Spații. Experiențe.<br>Proiect construit de studenți din Oradea.</p>
+      <p>Plante vii pentru spațiul tău. Le îngrijim noi.</p><p class="footer-meta">Oradea, Bihor · TikTok și Instagram: @verde.oradea<br>Proiect construit de studenți ai Universității din Oradea.</p>
     </div>
     <nav class="footer-links" aria-label="Linkuri">
-      <a href="#plante">Plante</a><a href="#potrivire">Plant Match</a><a href="#abonamente">Abonamente</a><a href="#pasaport">Plant Passport</a><a href="#despre">Despre noi</a><a href="#cerere">Programează evaluarea</a>
+      <a href="#plante">Plante</a><a href="#potrivire">Plant Match</a><a href="#abonamente">Abonamente</a><a href="#evenimente">Evenimente</a><a href="#pasaport">Plant Passport</a><a href="#despre">Despre noi</a><a href="#cerere">Programează evaluarea</a>
     </nav>
     <div class="footer-contact">
       <span>Scrie-ne</span>
@@ -372,5 +536,7 @@
 <script src="js/room.js"></script>
 <script src="js/scene.js"></script>
 <script src="js/app.js"></script>
+<script src="js/jungla.js"></script>
+<script src="js/transform.js"></script>
 </body>
 </html>

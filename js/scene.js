@@ -204,6 +204,9 @@
     }
     setRain(rainOn);
     if (rainBtn) rainBtn.addEventListener("click", function () { setRain(!rainOn); if (sound.on) sound.update(); });
+    var sceneEl = document.querySelector(".scene");
+    var sceneOn = sceneEl && getComputedStyle(sceneEl).display !== "none";
+    if (!sceneOn) return;
     if (!reduce) {
       requestAnimationFrame(loop);
       document.addEventListener("visibilitychange", function () { running = !document.hidden; if (running) requestAnimationFrame(loop); });

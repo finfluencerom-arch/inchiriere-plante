@@ -87,18 +87,46 @@ VERDE.plants = [
 ];
 
 /* ---------- Pachete de abonament ----------
-   Variantele de testat cu primii clienți. Prețul rămâne „după evaluare”
-   până la calculul costurilor; când îl stabiliți, completați `price` (ex. "de la 290 lei / lună"). */
+   Prețuri orientative din planul de afaceri; oferta finală se face după evaluarea gratuită. */
 VERDE.packages = [
-  { id: "esential", name: "Esențial", price: null,
-    tagline: "Plante îngrijite, fără bătăi de cap.",
-    features: ["Plante și ghivece decorative în chirie", "Vizită de întreținere la 2 săptămâni", "Înlocuirea plantelor deteriorate", "Plant Passport pentru fiecare plantă"] },
-  { id: "sezonier", name: "Sezonier", price: null, featured: true,
-    tagline: "Spațiul se schimbă odată cu anotimpurile.",
-    features: ["Tot ce include Esențial", "Rotație de compoziție de 4 ori pe an", "Propunere nouă de amenajare la fiecare sezon", "Raport scurt după fiecare vizită"] },
-  { id: "premium", name: "Premium", price: null,
+  { id: "ingrijire", name: "Îngrijire", price: "120–180", unit: "lei / lună",
+    tagline: "Ai deja plante? Le ținem noi în viață.",
+    features: ["Vizite de întreținere la plantele tale", "Udare, curățare, rotire, sfaturi", "Plant Passport pentru fiecare plantă", "Înlocuirile se plătesc separat"] },
+  { id: "mic", name: "Mic", price: "150–180", unit: "lei / lună",
+    tagline: "Pentru o recepție sau un colț verde.",
+    features: ["3–4 plante de la noi, în ghivece decorative", "O vizită de întreținere pe lună", "Înlocuirea plantelor care nu mai arată bine", "Plant Passport pentru fiecare plantă"] },
+  { id: "standard", name: "Standard", price: "300–350", unit: "lei / lună", featured: true,
+    tagline: "Cel mai ales pachet: spațiul arată verde tot anul.",
+    features: ["Aproximativ 8 plante alese pentru spațiul tău", "Două vizite pe lună", "Înlocuire gratuită în cel mult 3 zile lucrătoare", "Plant Passport și raport după vizită"] },
+  { id: "premium", name: "Premium", price: "de la 450", unit: "lei / lună",
     tagline: "Pentru spații unde imaginea contează mult.",
-    features: ["Tot ce include Sezonier", "Rotații la 6 săptămâni", "Amenajare personalizată pe identitatea brandului", "Intervenție prioritară la cerere"] }
+    features: ["Plante mari și amenajare pe identitatea brandului", "Rotații de sezon de 4 ori pe an", "Intervenție prioritară", "Plante pentru un eveniment pe an incluse"] }
+];
+
+/* ---------- Pachete pentru evenimente ---------- */
+VERDE.eventPackages = [
+  { id: "accent", name: "Accent", price: "300 lei", unit: "pe eveniment",
+    tagline: "Câteva plante mari care schimbă atmosfera.",
+    features: ["10 plante mari în ghivece decorative", "Le ridici din depozitul nostru din Oradea", "Le aduci înapoi a doua zi"] },
+  { id: "decor", name: "Decor", price: "1.100–1.200 lei", unit: "pe eveniment", featured: true,
+    tagline: "Cel mai ales pentru nunți și botezuri.",
+    features: ["Aproximativ 25 de plante", "Livrare, montaj și demontaj incluse", "Aranjare la intrare, ceremonie, mese și zona foto"] },
+  { id: "premium-ev", name: "Premium", price: "de la 2.000 lei", unit: "pe eveniment",
+    tagline: "Pentru conferințe, lansări și nunți mari.",
+    features: ["50+ plante", "Green Set: panou verde, arcadă, zonă foto", "Propunere de decor după pozele locației"] },
+  { id: "partener", name: "Partener sală", price: "900 lei", unit: "pe lună",
+    tagline: "Pentru sălile de evenimente.",
+    features: ["Plante permanente în sală, îngrijite de noi", "Până la 2 schimbări de decor pe lună", "Prioritate la evenimentele din sezon"] }
+];
+
+/* ---------- Echipa ----------
+   Completați numele când sunt stabilite; până atunci apar doar rolurile. */
+VERDE.team = [
+  { name: "", role: "Coordonare și vânzări", text: "Discuțiile cu firmele, ofertele și parteneriatele cu sălile de evenimente." },
+  { name: "", role: "Plante și operațiuni", text: "Alegerea speciilor, instalarea, vizitele și depozitul." },
+  { name: "", role: "Marketing și comunicare", text: "Brandul, TikTok, Instagram și materialele de prezentare." },
+  { name: "", role: "Platformă", text: "Site-ul, Plant Match și Plant Passport." },
+  { name: "", role: "Financiar", text: "Bugetul, facturile și indicatorii." }
 ];
 
 /* ---------- Plant Passport (profiluri demonstrative) ---------- */

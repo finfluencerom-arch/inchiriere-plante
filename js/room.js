@@ -237,5 +237,5 @@
   }
 
   var uid = 0;
-  window.VerdeRoom = { mountAll: function () { document.querySelectorAll("[data-room]:not(.room)").forEach(function (h) { h.dataset.uid = "r" + (uid++); mount(h); }); } };
+  window.VerdeRoom = { scenes: SCENES, svg: function (i, uid) { return roomSVG(SCENES[i], uid); }, mountAll: function () { document.querySelectorAll("[data-room]:not(.room)").forEach(function (h) { h.dataset.uid = "r" + (uid++); mount(h); }); } };
 })();

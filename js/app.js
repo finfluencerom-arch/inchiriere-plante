@@ -82,11 +82,13 @@
 
   /* ================= Router ================= */
   var current = null, rendered = {};
-  var VIEWS = ["acasa", "plante", "potrivire", "abonamente", "pasaport", "despre", "cerere"];
+  var VIEWS = ["acasa", "plante", "potrivire", "abonamente", "evenimente", "pasaport", "despre", "cerere"];
   function route() {
     var h = (location.hash || "").replace("#", "");
     var name = h, code = null;
+    var anchorId = null;
     if (h.indexOf("pasaport-") === 0) { name = "pasaport"; code = h.slice(9).toUpperCase(); }
+    else if (h.indexOf("abonamente-") === 0) { name = "abonamente"; anchorId = h; }
     if (VIEWS.indexOf(name) === -1) name = "acasa";
     var changed = name !== current;
     VIEWS.forEach(function (v) { $("view-" + v).hidden = v !== name; });
@@ -102,9 +104,25 @@
     if (name === "pasaport") showPassport(code);
     if (name === "cerere") renderSummary();
     if (name === "abonamente") renderPackages();
-    requestAnimationFrame(function () { paintCanvases(view); if (name === "acasa") drawFeature(); if (window.VerdeRoom) window.VerdeRoom.mountAll(); });
+    requestAnimationFrame(function () { observeReveal(view); paintCanvases(view); if (name === "acasa") drawFeature(); if (window.VerdeRoom) window.VerdeRoom.mountAll(); if (anchorId && $(anchorId)) $(anchorId).scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); });
   }
   window.addEventListener("hashchange", route);
+
+  /* ================= Apariție la scroll ================= */
+  var revealIO = null;
+  if ("IntersectionObserver" in window && !reduce) {
+    document.documentElement.classList.add("js-reveal");
+    revealIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("in"); revealIO.unobserve(en.target); } });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+  }
+  function observeReveal(root) {
+    if (!revealIO) return;
+    root.querySelectorAll(".band .section-head, .svc, .seg-grid li, .stat, .steps3 li, .season-grid li, .ev-types li, .member, .band .package").forEach(function (n, i) {
+      if (n.classList.contains("in")) return;
+      n.classList.add("reveal"); n.style.transitionDelay = (i % 4) * 70 + "ms"; revealIO.observe(n);
+    });
+  }
 
   /* ================= Acasă ================= */
   var FEATURED = ["kentia", "monstera", "strelitzia", "lyrata"], fIndex = 0, fTimer = null, fPaused = false;
@@ -277,12 +295,15 @@
   }
 
   /* ================= Abonamente ================= */
+  function priceHtml(pk, note) {
+    return '<div class="price">' + (pk.price ? esc(pk.price) + ' <span class="unit">' + esc(pk.unit || "") + "</span>" : "Preț după evaluare") + "<small>" + note + "</small></div>";
+  }
   function renderPackages() {
     var box = $("packages"); box.innerHTML = "";
     D.packages.forEach(function (pk) {
       var c = el("article", "package" + (pk.featured ? " featured" : "") + (sel.pack === pk.id ? " chosen" : ""));
-      c.innerHTML = (pk.featured ? '<span class="ribbon">Recomandat</span>' : "") + "<h2>" + esc(pk.name) + '</h2><p class="tagline">' + esc(pk.tagline) + "</p>" +
-        '<div class="price">' + (pk.price ? esc(pk.price) : "Preț după evaluare") + "<small>abonament lunar, stabilit după vizita gratuită</small></div>" +
+      c.innerHTML = (pk.featured ? '<span class="ribbon">Cel mai ales</span>' : "") + "<h2>" + esc(pk.name) + '</h2><p class="tagline">' + esc(pk.tagline) + "</p>" +
+        priceHtml(pk, "preț orientativ; oferta finală după vizita gratuită") +
         "<ul>" + pk.features.map(function (f) { return "<li>" + esc(f) + "</li>"; }).join("") + "</ul>";
       var b = el("button", "btn" + (pk.featured ? "" : " ghost"), sel.pack === pk.id ? "Pachet ales" : "Alege " + esc(pk.name)); b.type = "button";
       b.addEventListener("click", function () { sel.pack = pk.id; persist(); toast("Ai ales pachetul " + esc(pk.name) + ".", "Vezi selecția", openDrawer); });
@@ -409,7 +430,7 @@
       (ids.length ? '<ul class="sum-list">' + ids.map(function (id) { return "<li><span>" + esc(BY_ID[id].name) + "</span><span>× " + sel.items[id] + "</span></li>"; }).join("") + "</ul>"
         : '<p class="sum-note">Nu ai ales încă plante. Nicio problemă: le alegem împreună la evaluare.</p>') +
       '<div class="sum-pack"><small>Pachet</small><strong>' + (pk ? esc(pk.name) : "Încă nu ai ales") + "</strong></div>" +
-      '<p class="sum-note">Evaluarea e gratuită. Prețul abonamentului îl primești după vizită.</p>';
+      '<p class="sum-note">Evaluarea e gratuită. Abonamentele pornesc de la 120 de lei pe lună; prețul exact îl primești în oferta de după vizită.</p>';
     var row = el("div", "btn-row");
     var e1 = el("button", "btn ghost small", "Modifică selecția"); e1.type = "button"; e1.addEventListener("click", openDrawer); row.appendChild(e1);
     s.appendChild(row);
@@ -469,7 +490,69 @@
     }).join("") + "</ul>";
   }
 
-  var INIT = { acasa: initHome, plante: initCatalog, potrivire: initWizard, pasaport: initPassport, cerere: initRequest };
+  /* ================= Evenimente ================= */
+  function initEvents() {
+    var box = $("event-packages"), sel2 = $("e-pack");
+    (D.eventPackages || []).forEach(function (pk) {
+      var c = el("article", "package" + (pk.featured ? " featured" : ""));
+      c.innerHTML = (pk.featured ? '<span class="ribbon">Cel mai ales</span>' : "") + "<h2>" + esc(pk.name) + '</h2><p class="tagline">' + esc(pk.tagline) + "</p>" +
+        priceHtml(pk, "preț orientativ; propunerea finală după pozele locației") +
+        "<ul>" + pk.features.map(function (f) { return "<li>" + esc(f) + "</li>"; }).join("") + "</ul>";
+      var b = el("button", "btn" + (pk.featured ? "" : " ghost"), "Cere o propunere"); b.type = "button";
+      b.addEventListener("click", function () { sel2.value = pk.id; $("ev-request").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); });
+      c.appendChild(b); box.appendChild(c);
+      var o = document.createElement("option"); o.value = pk.id; o.textContent = pk.name + " (" + pk.price + " " + pk.unit + ")"; sel2.appendChild(o);
+    });
+    var o2 = document.createElement("option"); o2.value = ""; o2.textContent = "Nu știu încă, vreau o recomandare"; sel2.appendChild(o2);
+    var today = new Date(); today.setDate(today.getDate() + 7); $("e-date").min = today.toISOString().slice(0, 10);
+    $("event-form").addEventListener("submit", submitEvent);
+  }
+  function submitEvent(e) {
+    e.preventDefault();
+    var req = [["e-date", "data"], ["e-place", "locul"], ["e-name", "numele tău"], ["e-phone", "telefonul"]], missing = [];
+    req.forEach(function (r) { var f = $(r[0]); var bad = !f.value.trim(); f.closest(".field").classList.toggle("invalid", bad); if (bad) missing.push(r[1]); });
+    var em = $("e-email").value.trim();
+    if (em && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) missing.push("un email valid");
+    if (!$("e-consent").checked) missing.push("acordul pentru a fi contactat");
+    var err = $("e-error");
+    if (missing.length) { err.hidden = false; err.textContent = "Mai completează: " + missing.join(", ") + "."; return; }
+    err.hidden = true;
+    var code = "EVT-" + String(Date.now()).slice(-5);
+    var pkSel = $("e-pack"), pkName = pkSel.options[pkSel.selectedIndex].textContent;
+    var data = { cod: code, tip: $("e-type").value, data: $("e-date").value, loc: $("e-place").value.trim(), invitati: $("e-guests").value, pachet: pkName,
+      nume: $("e-name").value.trim(), telefon: $("e-phone").value.trim(), email: em, observatii: $("e-notes").value.trim() };
+    var text = "Cerere eveniment " + code + "\n\nEveniment: " + data.tip + ", " + fmtDate(data.data) + "\nLoc: " + data.loc + "\nInvitați: " + data.invitati + "\nPachet: " + data.pachet +
+      "\n\nContact: " + data.nume + ", " + data.telefon + (data.email ? ", " + data.email : "") + (data.observatii ? "\n\nDorințe: " + data.observatii : "");
+    var sent = false;
+    if (D.settings.formEndpoint) {
+      fetch(D.settings.formEndpoint, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(data) })
+        .then(function (r) { if (!r.ok) throw new Error(); }).catch(function () { mailtoEv(code, text); });
+      sent = true;
+    } else mailtoEv(code, text);
+    $("event-form").hidden = true;
+    var c = $("ev-confirmation"); c.hidden = false;
+    c.innerHTML = '<div class="confirm"><span class="seal">' + ICON.check.replace("<svg", '<svg width="32" height="32"') + "</span><h2>Cererea a fost trimisă</h2>" +
+      '<p class="req-code">' + code + "</p><p>Te contactăm la " + esc(data.telefon) + " cu propunerea pentru " + esc(data.tip.toLowerCase()) + " din " + fmtDate(data.data) + ".</p>" +
+      (sent ? "" : "<p>Am deschis mesajul în aplicația ta de email. Dacă nu s-a deschis, trimite codul cererii la <strong>" + esc(D.settings.email) + "</strong>.</p>") +
+      '<div class="btn-row"><button class="btn ghost" type="button" id="new-ev">Cerere nouă</button></div></div>';
+    $("new-ev").addEventListener("click", function () { c.hidden = true; $("event-form").hidden = false; $("event-form").reset(); });
+  }
+  function mailtoEv(code, text) {
+    try { window.location.href = "mailto:" + D.settings.email + "?subject=" + encodeURIComponent("Cerere eveniment VERDÉ " + code) + "&body=" + encodeURIComponent(text); } catch (e) { /* ignorat */ }
+  }
+
+  /* ================= Despre: echipa ================= */
+  function initAbout() {
+    var g = $("team-grid"); if (!g) return;
+    (D.team || []).forEach(function (m) {
+      var li = el("li", "member");
+      li.innerHTML = '<span class="avatar" aria-hidden="true">' + esc((m.name || m.role).charAt(0)) + "</span><div>" + (m.name ? "<h3>" + esc(m.name) + "</h3>" : "") +
+        '<p class="role">' + esc(m.role) + "</p><p>" + esc(m.text) + "</p></div>";
+      g.appendChild(li);
+    });
+  }
+
+  var INIT = { acasa: initHome, plante: initCatalog, potrivire: initWizard, evenimente: initEvents, pasaport: initPassport, despre: initAbout, cerere: initRequest };
 
   /* ================= Elemente comune ================= */
   function closeMenu() { $("nav").classList.remove("open"); $("menu-btn").setAttribute("aria-expanded", "false"); }
